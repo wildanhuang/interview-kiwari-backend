@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   # API
   namespace :api do
     namespace :v1 do
-      resources :products
+      resources :products do
+        get :version
+      end
     end
   end
+
+  get 'api/v1', to: 'api/v1/products#version', as: :api_version
 end

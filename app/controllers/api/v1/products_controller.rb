@@ -3,7 +3,7 @@ class Api::V1::ProductsController < ApplicationController
 
   def index
     products = Product.all.collect{ |product| collect_data(product) }
-    render json: {code: 200, msg: "Success", data: products}
+    render json: { code: 200, msg: "Success", data: products }
   end
 
   def show
@@ -11,7 +11,7 @@ class Api::V1::ProductsController < ApplicationController
     if product
       success_respond(product)
     else
-      render json: {code: 404, msg: "Failed: data not found"}
+      render json: { code: 404, msg: "Failed: data not found" }
     end
   end
 
@@ -21,7 +21,7 @@ class Api::V1::ProductsController < ApplicationController
     if product.valid? && product.save
       success_respond(product)
     else
-      render json: {code: 404, msg: "Failed: data not found"}
+      render json: { code: 404, msg: "Failed: data not found" }
     end
   end
 
@@ -32,7 +32,7 @@ class Api::V1::ProductsController < ApplicationController
     if product.present? && data.present? && product.update_attributes(data)
       success_respond(product)
     else
-      render json: {code: 404, msg: "Failed: data not found"}
+      render json: { code: 404, msg: "Failed: data not found" }
     end
   end
 
@@ -40,14 +40,18 @@ class Api::V1::ProductsController < ApplicationController
     product = Product.find(params[:id]) rescue nil
 
     if product.present? && product.destroy
-      render json: {code: 200, msg: "Success", data: []}
+      render json: { code: 200, msg: "Success", data: [] }
     else
-      render json: {code: 404, msg: "Failed: data not found"}
+      render json: { code: 404, msg: "Failed: data not found" }
     end
   end
 
   def success_respond(product)
-    render json: {code: 200, msg: "Success", data: collect_data(product)}
+    render json: { code: 200, msg: "Success", data: collect_data(product) }
+  end
+
+  def version
+    render json: { code: 200, msg: "Success", data: { name: "Belanja API Demo", version: "1.0.0" } }
   end
 
   private
@@ -57,9 +61,9 @@ class Api::V1::ProductsController < ApplicationController
 
     def product_params
       data = {}
-      data.merge!({name: params[:name]}) if params[:name].present?
-      data.merge!({price: params[:price]}) if params[:price].present?
-      data.merge!({image: params[:image]}) if params[:image].present?
+      data.merge!({ name: params[:name] }) if params[:name].present?
+      data.merge!({ price: params[:price] }) if params[:price].present?
+      data.merge!({ image: params[:image] }) if params[:image].present?
 
       return data
     end
