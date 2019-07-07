@@ -1,0 +1,19 @@
+FROM ruby:2.3.1
+
+# Copy application code
+COPY . /application
+# Change to the application's directory
+WORKDIR /application
+
+# Set Rails environment to production
+ENV RAILS_ENV production
+
+# Install gems, nodejs and precompile the assets
+RUN bundle install --deployment --without development test
+
+RUN apt-get install curl python-software-properties \
+    && curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - \
+    && sudo apt-get install -y nodejs
+
+# Start the application server
+ENTRYPOINT ['./entrypoint.sh']
